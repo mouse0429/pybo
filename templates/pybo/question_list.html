@@ -61,12 +61,12 @@
     {% endif %}
     {% if question_list.number > 5 %}
     <li class="page-item">
-      <a class="page-link" href="?page={{ start_index }}">1</a>
+      <a class="page-link" data-page="{{ 1 }}" href="javascript:void(0)">1</a>
     </li>
     {% endif %}
     {% if question_list.number > 6 %}
     <li class="page-item">
-      <a class="page-link" href="#">...</a>
+      <a class="page-link" href="javascript:void(0)">...</a>
     </li>
     {% endif %}
     {% for page_number in question_list.paginator.page_range %}
@@ -78,20 +78,20 @@
     </li>
     {% else %}
     <li class="page-item">
-      <a class="page-link" data-page="{{ page_number }}" 
-        href="javascirpt:void(0)">{{ page_number }}</a>
+      <a class="page-link" data-page="{{ page_number }}"
+        href="javascript:void(0)">{{ page_number }}</a>
     </li>
     {% endif %}
     {% endif %}
     {% endfor %}
     {% if question_list.number|add:5 < max_index %}
     <li class="page-item">
-      <a class="page-link" href="#">...</a>
+      <a class="page-link" href="javascript:void(0)">...</a>
     </li>
     {% endif %}
     {% if question_list.number|add:4 < max_index %}
     <li class="page-item">
-      <a class="page-link" href="?page={{ max_index }}">{{ max_index }}</a>
+      <a class="page-link" data-page="{{ max_index }}" href="javascript:void(0)">{{ max_index }}</a>
     </li>
     {% endif %}
     {% if question_list.has_next %}
@@ -116,16 +116,16 @@
 <script type='text/javascript'>
 const page_elements = document.getElementsByClassName("page-link");
 Array.from(page_elements).forEach(function(element) {
-    element.addEventListener('click', function() {
-        document.getElementById('page').value = this.dataset.page;
-        document.getElementById('searchForm').submit();
-    });
+  element.addEventListener('click', function() {
+    document.getElementById('page').value = this.dataset.page;
+    document.getElementById('searchForm').submit();
+  });
 });
 const btn_search = document.getElementById("btn_search");
 btn_search.addEventListener('click', function() {
-    document.getElementById('kw').value = document.getElementById('search_kw').value;
-    document.getElementById('page').value = 1;  // 검색버튼을 클릭할 경우 1페이지부터 조회한다.
-    document.getElementById('searchForm').submit();
+  document.getElementById('kw').value = document.getElementById('search_kw').value;
+  document.getElementById('page').value = 1;  // 검색버튼을 클릭할 경우 1페이지부터 조회한다.
+  document.getElementById('searchForm').submit();
 });
 </script>
 {% endblock %}
