@@ -109,7 +109,6 @@
     <input type="submit" value="답변 등록" class="btn btn-primary">
   </form>
   <form id="pageForm" method="get" action="{% url 'pybo:detail' question.id %}">
-    <!-- <input type="hidden" id="order" name="order" value="{{ order|default_if_none:'recommend' }}"> -->
     <input type="hidden" id="page" name="page" value="{{ page }}">
   </form>
 </div>
