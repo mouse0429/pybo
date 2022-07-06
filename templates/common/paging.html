@@ -1,0 +1,57 @@
+<ul class="pagination justify-content-center">
+  {% if list.has_previous %}
+  <li class="page-item">
+    <a class="page-link" data-page="{{ list.previous_page_number }}"
+      href="javascript:void(0)">이전</a>
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">이전</a>
+  </li>
+  {% endif %}
+  {% if list.number > 5 %}
+  <li class="page-item">
+    <a class="page-link" data-page="{{ 1 }}" href="javascript:void(0)">1</a>
+  </li>
+  {% endif %}
+  {% if list.number > 6 %}
+  <li class="page-item">
+    <a class="page-link" href="javascript:void(0)">...</a>
+  </li>
+  {% endif %}
+  {% for page_number in list.paginator.page_range %}
+  {% if page_number > list.number|add:-5 and page_number < list.number|add:5 %}
+  {% if page_number == list.number %}
+  <li class="page-item active" aria-current="page">
+    <a class="page-link" data-page="{{ page_number }}"
+      href="javascript:void(0)">{{ page_number }}</a>
+  </li>
+  {% else %}
+  <li class="page-item">
+    <a class="page-link" data-page="{{ page_number }}"
+      href="javascript:void(0)">{{ page_number }}</a>
+  </li>
+  {% endif %}
+  {% endif %}
+  {% endfor %}
+  {% if list.number|add:5 < max_index %}
+  <li class="page-item">
+    <a class="page-link" href="javascript:void(0)">...</a>
+  </li>
+  {% endif %}
+  {% if list.number|add:4 < max_index %}
+  <li class="page-item">
+    <a class="page-link" data-page="{{ max_index }}" href="javascript:void(0)">{{ max_index }}</a>
+  </li>
+  {% endif %}
+  {% if list.has_next %}
+  <li class="page-item">
+    <a class="page-link" data-page="{{ list.next_page_number }}"
+      href="javascript:void(0)">다음</a>
+  </li>
+  {% else %}
+  <li class="page-item disabled">
+    <a class="page-link" tabindex="-1" aria-disabled="true" href="#">다음</a>
+  </li>
+  {% endif %}
+</ul>

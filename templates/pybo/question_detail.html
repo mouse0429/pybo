@@ -41,7 +41,21 @@
     </div>
   </div>
   <h5 class="border-bottom my-3 py2">{{ question.answer_set.count }}개의 답변이 있습니다.</h5>
-  {% for answer in question.answer_set.all %}
+  <div class="btn-group">
+    <button type="button" id="dropdown" class="btn btn-primary dropdown-toggle" 
+      data-toggle="dropdown" aria-haspopup="true" data-bs-toggle="dropdown" aria-expanded="false">
+      정렬
+    </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="javascript:void(0)" data-order="recommend">추천순</a>
+      <a class="dropdown-item" href="javascript:void(0)" data-order="latest">최신순</a>
+      <a class="dropdown-item" href="javascript:void(0)" data-order="create">생성순</a>
+    </div>
+  </div>
+  <form id="orderForm" method="get" action="{% url 'pybo:detail' question.id %}">
+    <input type="hidden" id="order" name="order" value="{{ order }}">
+  </form>
+  {% for answer in answer_list %}
   <a id="answer_{{ answer.id }}"></a>
   <div class="card my-3">
     <div class="card-body">
@@ -64,7 +78,7 @@
           <span class="badge rounded-pill bg-success">{{ answer.voter.count }}</span>
         </a>
         {% if request.user == answer.author %}
-        <a href="{% url 'pybo:answer_modify' answer.id  %}" 
+        <a href="{% url 'pybo:answer_modify' answer.id %}" 
           class="btn btn-sm btn-outline-secondary">수정</a>
         <a href="#" data-uri="{% url 'pybo:answer_delete' answer.id %}"
           class="delete btn btn-sm btn-outline-secondary">삭제</a>
@@ -87,11 +101,16 @@
       {% endfor %}
     </div>
     {% endif %}
+    {% include "../common/paging.html" with list=answer_list %}
     <div class="mb-3">
       <label for="content" class="form-label">답변내용</label>
       <textarea {% if not user.is_authenticated %}disabled{% endif %} name="content" id="content" class=form-control rows="10"></textarea>
     </div>
     <input type="submit" value="답변 등록" class="btn btn-primary">
+  </form>
+  <form id="pageForm" method="get" action="{% url 'pybo:detail' question.id %}">
+    <!-- <input type="hidden" id="order" name="order" value="{{ order|default_if_none:'recommend' }}"> -->
+    <input type="hidden" id="page" name="page" value="{{ page }}">
   </form>
 </div>
 {% endblock %}
@@ -113,5 +132,24 @@ Array.from(recommend_elements).forEach(function(element) {
     }
   })
 })
+const dropdown_elements = document.getElementsByClassName("dropdown-item");
+Array.from(dropdown_elements).forEach(function(element) {
+  element.addEventListener('click', function() {
+    console.log(this.dataset.order);
+    document.getElementById('order').value = this.dataset.order;
+    document.getElementById('orderForm').submit();
+  })
+})
+const page_elements = document.getElementsByClassName("page-link");
+Array.from(page_elements).forEach(function(element) {
+  element.addEventListener('click', function() {
+    console.log('외않되', this.dataset.page)
+    document.getElementById('page').value = this.dataset.page;
+    document.getElementById('pageForm').submit();
+  });
+});
+$(document).ready(function(){
+    $(".dropdown-toggle").dropdown();
+});
 </script>
 {% endblock %}
